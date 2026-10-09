@@ -1,25 +1,71 @@
 import 'package:flutter/material.dart';
-import 'package:wajiha_game_core/wajiha_game_core.dart';
-import 'game_screen.dart';
+import 'package:flutter/services.dart';
+import 'screens/splash_screen.dart';
+import 'services/audio_service.dart';
+import 'services/settings_service.dart';
+import 'theme/cardroom.dart';
 
-void main() => runApp(const SpadesApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+  final settings = SpadesSettings();
+  await settings.load();
+  final audio = SpadesAudio();
+  audio.configure(
+    musicOn: settings.musicOn,
+    sfxOn: settings.sfxOn,
+    volume: settings.volume,
+  );
+  runApp(SpadesApp(settings: settings, audio: audio));
+}
 
-class SpadesApp extends StatelessWidget {
-  const SpadesApp({super.key});
+class SpadesApp extends StatefulWidget {
+  final SpadesSettings settings;
+  final SpadesAudio audio;
+  const SpadesApp({super.key, required this.settings, required this.audio});
+
+  @override
+  State<SpadesApp> createState() => _SpadesAppState();
+}
+
+class _SpadesAppState extends State<SpadesApp> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    widget.audio.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // Pause (not stop) on interruption so music resumes exactly where it
+    // left off; game screens additionally freeze their engines.
+    if (state == AppLifecycleState.paused) {
+      widget.audio.onAppPaused();
+    } else if (state == AppLifecycleState.resumed) {
+      widget.audio.onAppResumed();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return GameShell(
-      variant: ShellVariant.graffitiWall,
-      title: 'Spades',
-      tagline: 'Bid bold, trump hard, and race to 500 in the king of trick-taking games!',
-      emoji: '♠️',
-      slug: 'spades',
-      howToPlay:
-          '• You + 3 rivals. Bid how many tricks you\'ll take — or go NIL for a 100-pt thrill!\n• Follow suit if you can. Spades are trump but can\'t lead until broken.\n• Make your bid: 10× bid + 1 per overtrick. Miss it: −10× bid. Ouch.\n• First to 500 wins the match. Play solo vs bots or pass-and-play!',
-      playerOptions: const [1, 4],
-      supportsBots: false,
-      gameBuilder: (ctx, players, cb) => SpadesScreen(players: players, callbacks: cb),
+    return ListenableBuilder(
+      listenable: widget.settings,
+      builder: (_, _) => MaterialApp(
+        title: 'Spades',
+        debugShowCheckedModeBanner: false,
+        theme: Felt.theme(widget.settings.theme),
+        home: SplashScreen(audio: widget.audio, settings: widget.settings),
+      ),
     );
   }
 }
