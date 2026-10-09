@@ -360,8 +360,6 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
         !_e.players[0].isBot;
   }
 
-  bool get _solo => _soloView;
-
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -586,7 +584,7 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
 
   Widget _dealOverlay(double w, double h) {
     // Deck in the middle; a card back flies to the current seat each step.
-    final seatTargets = <Offset>{
+    final seatTargets = <int, Offset>{
       0: Offset(w / 2, h - 60),
       1: Offset(44, h / 2),
       2: Offset(w / 2, 60),

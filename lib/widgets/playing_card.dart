@@ -222,7 +222,6 @@ class _BackPainter extends CustomPainter {
     );
     final cx = size.width / 2;
     final cy = size.height / 2;
-    final pip = theme.accentLight;
     void glyph(String text, double fs, Color c) {
       final tp = TextPainter(
         text: TextSpan(
