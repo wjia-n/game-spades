@@ -72,7 +72,7 @@ class SpadesSettings extends ChangeNotifier {
   int gamesPlayed = 0;
   int bestScore = 0; // highest winning human score (0 = none yet)
   int reviewAsks = 0; // review prompts shown this install (throttle)
-  bool isPro = false;
+  bool isPro = true; // everything unlocked — no Pro version
 
   /// Custom theme colors (ARGB ints). Defaults mirror Classic Casino.
   Map<String, int> customColors = Map.of(_defaultCustomColors);
@@ -155,7 +155,7 @@ class SpadesSettings extends ChangeNotifier {
     gamesPlayed = p.getInt(_kGames) ?? 0;
     bestScore = p.getInt(_kBestScore) ?? 0;
     reviewAsks = p.getInt(_kReviewAsks) ?? 0;
-    isPro = p.getBool(_kIsPro) ?? false;
+    isPro = true; // everything unlocked
     for (final k in _defaultCustomColors.keys) {
       customColors[k] =
           p.getInt('$_kCustomPrefix$k') ?? _defaultCustomColors[k]!;
