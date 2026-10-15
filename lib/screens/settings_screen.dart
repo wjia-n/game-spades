@@ -122,7 +122,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 child: Text(
                   'Spades by WAJIHA — the classic trick-taking card game. '
                   'Bid bold, trump hard, and race to 500.\n\n'
-                  'Version 1.0.0 • Made with ♠️ in Karachi.',
+                  'Version 1.0.0 • Made with ♠️ for card fans.',
                   style: Felt.body(13, theme: _t),
                 ),
               ),

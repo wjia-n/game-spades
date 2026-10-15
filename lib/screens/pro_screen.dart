@@ -178,47 +178,11 @@ class _ProScreenState extends State<ProScreen> {
   }
 
   Widget _buySection() {
-    if (_s.isPro) {
-      return Center(
-        child: Text('PRO is active on this device. Enjoy the table! ♠️',
-            textAlign: TextAlign.center, style: Felt.body(15, theme: _t)),
-      );
-    }
-    final pro = _store.proProduct;
-    if (!_store.storeReady || pro == null) {
-      // Graceful pre-launch state: honest, never a fake buy button.
-      return Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: _t.railDeep.withValues(alpha: 0.6),
-          borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: _t.accent.withValues(alpha: 0.4)),
-        ),
-        child: Text(
-          'PRO unlock will be available here once the store listing is set up. '
-          'Everything in the free game stays free forever. ♠️',
-          textAlign: TextAlign.center,
-          style: Felt.body(14, theme: _t),
-        ),
-      );
-    }
-    return Column(children: [
-      Center(
-        child: ValueListenableBuilder<bool>(
-          valueListenable: _store.purchaseInProgress,
-          builder: (_, busy, __) => FeltButton(
-            label: busy ? 'Working…' : 'Unlock PRO — ${pro.price}',
-            theme: _t,
-            width: 260,
-            onTap: busy ? null : () => _store.buyPro(),
-          ),
-        ),
-      ),
-      const SizedBox(height: 8),
-      Text('One-time purchase. Yours forever.',
-          style: Felt.body(12,
-              theme: _t, color: _t.text.withValues(alpha: 0.65))),
-    ]);
+    // Pro was removed: everything is unlocked, tips only.
+    return Center(
+      child: Text('PRO is active on this device. Enjoy the table! ♠️',
+          textAlign: TextAlign.center, style: Felt.body(15, theme: _t)),
+    );
   }
 
   Widget _tipJar() {
