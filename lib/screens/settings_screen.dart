@@ -3,6 +3,7 @@ import '../services/audio_service.dart';
 import '../services/settings_service.dart';
 import '../theme/cardroom.dart';
 import '../theme/felt_themes.dart';
+import '../transfer/transfer_ui.dart';
 
 /// Settings: audio controls, lifetime stats, data reset, about.
 class SettingsScreen extends StatefulWidget {
@@ -46,6 +47,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           child: ListView(
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
             children: [
+              TransferSaveTile(gameSlug: 'spades'),
               Text('Sound & music 🎵', style: Felt.display(20, theme: _t)),
               const SizedBox(height: 10),
               SettingRow(
