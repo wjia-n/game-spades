@@ -226,10 +226,6 @@ class _MenuScreenState extends State<MenuScreen> {
         const SizedBox(height: 10),
         _choiceRow('Bot skill', const ['Chill 😌', 'Sharp 🧠', 'Shark 🦈🔒'],
             _s.difficulty, (i) {
-          if (i == 2 && !_s.isPro) {
-            _proNudge();
-            return;
-          }
           widget.audio.click();
           _s.setSetup(
               humans: _s.humans,
@@ -349,17 +345,7 @@ class _MenuScreenState extends State<MenuScreen> {
     );
   }
 
-  void _proNudge() {
-    widget.audio.click();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('🦈 Shark bots are a PRO feature — check the Pro tab!',
-            style: Felt.body(14, theme: _t)),
-        backgroundColor: _t.railDeep,
-        behavior: SnackBarBehavior.floating,
-      ),
-    );
-  }
+
 
   Widget _playerNames() {
     return Container(
@@ -462,10 +448,6 @@ class _MenuScreenState extends State<MenuScreen> {
             final sel = _s.themeId == th.id;
             return GestureDetector(
               onTap: () {
-                if (pro && !_s.isPro) {
-                  _proNudge();
-                  return;
-                }
                 widget.audio.click();
                 _s.setTheme(th.id);
               },
@@ -537,10 +519,6 @@ class _MenuScreenState extends State<MenuScreen> {
               final sel = _s.cardBack == i;
               return GestureDetector(
                 onTap: () {
-                  if (pro && !_s.isPro) {
-                    _proNudge();
-                    return;
-                  }
                   widget.audio.click();
                   _s.setCardBack(i);
                 },
@@ -657,6 +635,14 @@ class _MenuScreenState extends State<MenuScreen> {
   }
 
   Widget _tipJarStrip() {
+    // iOS: no tip jar — the Gold Star button in the footer covers iOS.
+    if (defaultTargetPlatform == TargetPlatform.iOS) {
+      return Text(
+        'Made with ♠️ by WAJIHA',
+        textAlign: TextAlign.center,
+        style: Felt.body(12, theme: _t, color: _t.text.withValues(alpha: 0.6)),
+      );
+    }
     if (_store.storeReady) {
       final coffee = _store.coffeeProduct;
       return Container(
