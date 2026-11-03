@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../services/audio_service.dart';
 import '../services/settings_service.dart';
@@ -161,7 +162,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         theme: _t,
         children: [
           Text(
-            'This clears your names, themes, stats and settings. PRO unlock is tied to your Google Play purchase and can be restored.',
+            defaultTargetPlatform == TargetPlatform.iOS ? 'This clears your names, themes, stats and settings.' : 'This clears your names, themes, stats and settings. PRO unlock is tied to your Google Play purchase and can be restored.',
             textAlign: TextAlign.center,
             style: Felt.body(14, theme: _t),
           ),

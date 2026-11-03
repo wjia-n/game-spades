@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:share_plus/share_plus.dart';
@@ -171,7 +172,7 @@ class _MenuScreenState extends State<MenuScreen> {
         style: Felt.body(15, theme: _t, color: _t.text.withValues(alpha: 0.8)),
         textAlign: TextAlign.center,
       ),
-      if (_s.isPro)
+      if (_s.isPro && defaultTargetPlatform != TargetPlatform.iOS)
         Padding(
           padding: const EdgeInsets.only(top: 6),
           child: Text('♠️ PRO',
@@ -589,7 +590,7 @@ class _MenuScreenState extends State<MenuScreen> {
                       audio: widget.audio, settings: _s)))
               .then((_) => setState(() {}));
         }),
-        _menuBtn('♠️ Pro', () {
+        _menuBtn(defaultTargetPlatform == TargetPlatform.iOS ? '⭐ Gold Star' : '♠️ Pro', () {
           widget.audio.click();
           Navigator.of(context)
               .push(MaterialPageRoute(
